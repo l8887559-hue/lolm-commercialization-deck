@@ -1,0 +1,1113 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>LOLM 商业化结构 · 可视化方案</title>
+<style>
+:root{
+  --bg:#0f1419; --panel:#161d26; --panel-hi:#1c2530;
+  --line:#22303f; --text:#e4e7eb; --muted:#8b96a5; --dim:#5c6875;
+  --gold:#c89b3c; --gold-dim:#7a5f2a;
+  --blue:#3a92d4; --cyan:#3acde5;
+  --purple:#9b5dd7; --pink:#e86aa3;
+  --red:#e94e4e; --green:#4caf7a;
+  --orange:#e8a24a;
+  --grade-common:#8a96a3; --grade-epic:#7d52c8; --grade-legend:#c89b3c;
+  --grade-myth:#e8507d; --grade-ultimate:#3acde5; --grade-final:#ff6b35;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.55;
+  font-size:14px;padding:32px 20px 80px;
+}
+.container{max-width:1440px;margin:0 auto}
+/* ——— 顶部 ——— */
+.header{
+  border-bottom:2px solid var(--gold-dim);
+  padding-bottom:18px;margin-bottom:28px;
+}
+.header h1{
+  font-size:26px;color:var(--gold);font-weight:700;
+  letter-spacing:1px;margin-bottom:6px;
+}
+.header .sub{color:var(--muted);font-size:13px}
+.header .meta{
+  margin-top:10px;display:flex;gap:16px;color:var(--dim);font-size:12px;
+}
+.header .meta span::before{content:"▸ ";color:var(--gold-dim)}
+
+/* ——— 章节 ——— */
+.section{margin-top:40px}
+.section-title{
+  display:flex;align-items:baseline;gap:14px;
+  margin-bottom:18px;padding-bottom:10px;
+  border-bottom:1px solid var(--line);
+}
+.section-title .num{
+  font-size:28px;font-weight:800;color:var(--gold);
+  font-family:Georgia,serif;
+}
+.section-title .title{font-size:19px;font-weight:600;color:var(--text)}
+.section-title .hint{font-size:12px;color:var(--muted);margin-left:auto}
+
+/* ——— 通用 panel ——— */
+.panel{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:8px;padding:20px;
+}
+.panel-title{
+  font-size:15px;font-weight:600;color:var(--gold);
+  margin-bottom:14px;display:flex;align-items:center;gap:8px;
+}
+.panel-title::before{
+  content:"";width:3px;height:14px;background:var(--gold);
+  border-radius:2px;
+}
+
+/* ——— 三轨总览 ——— */
+.tri-track{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+}
+.track-card{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:10px;padding:18px;position:relative;
+  transition:all .2s;
+}
+.track-card:hover{border-color:var(--gold-dim);transform:translateY(-2px)}
+.track-card .tag{
+  position:absolute;top:14px;right:14px;
+  font-size:11px;padding:2px 8px;border-radius:10px;
+  background:var(--line);color:var(--muted);
+}
+.track-card h3{font-size:17px;margin-bottom:4px}
+.track-card .role{color:var(--muted);font-size:12px;margin-bottom:12px}
+.track-card .price{
+  font-size:22px;font-weight:700;color:var(--gold);
+  font-family:Georgia,serif;margin-bottom:10px;
+}
+.track-card .price small{font-size:12px;color:var(--muted);font-weight:400}
+.track-card .items{font-size:12.5px;color:var(--muted);line-height:1.8}
+.track-card .items b{color:var(--text);font-weight:500}
+.track-A{border-top:3px solid var(--blue)}
+.track-B{border-top:3px solid var(--orange)}
+.track-C{border-top:3px solid var(--pink)}
+.track-A h3{color:var(--blue)}
+.track-B h3{color:var(--orange)}
+.track-C h3{color:var(--pink)}
+
+.harvest{
+  margin-top:18px;padding:16px 20px;
+  background:linear-gradient(90deg,rgba(200,155,60,.08),rgba(232,106,163,.08));
+  border:1px solid var(--gold-dim);border-radius:8px;
+}
+.harvest-title{color:var(--gold);font-weight:600;margin-bottom:10px;font-size:13px}
+.harvest-flow{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  font-size:12.5px;
+}
+.harvest-step{
+  padding:6px 12px;background:var(--panel-hi);border-radius:4px;
+  border:1px solid var(--line);
+}
+.harvest-arrow{color:var(--gold-dim);font-weight:700}
+
+/* ——— 皮肤分级表 ——— */
+.grade-table{
+  width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;
+}
+.grade-table th,.grade-table td{
+  padding:10px 12px;text-align:left;
+  border-bottom:1px solid var(--line);vertical-align:top;
+}
+.grade-table thead th{
+  background:var(--panel-hi);color:var(--muted);
+  font-weight:500;font-size:11.5px;letter-spacing:.5px;
+  text-transform:uppercase;
+}
+.grade-table tr:hover td{background:rgba(200,155,60,.04)}
+.grade-badge{
+  display:inline-block;padding:3px 10px;border-radius:12px;
+  font-weight:600;font-size:11.5px;min-width:54px;text-align:center;
+}
+.g-common{background:rgba(138,150,163,.15);color:var(--grade-common)}
+.g-epic{background:rgba(125,82,200,.15);color:#b894eb}
+.g-legend{background:rgba(200,155,60,.15);color:var(--gold)}
+.g-myth{background:rgba(232,80,125,.15);color:#f078a0}
+.g-ultimate{background:rgba(58,205,229,.15);color:var(--cyan)}
+.g-final{background:rgba(255,107,53,.15);color:var(--grade-final)}
+.price-tag{font-family:Georgia,serif;font-weight:600;color:var(--gold)}
+.channel-tag{
+  display:inline-block;padding:2px 8px;margin:2px 3px 2px 0;
+  border-radius:3px;font-size:11px;background:var(--line);
+  color:var(--muted);
+}
+.channel-tag.hot{background:rgba(232,106,163,.15);color:#f078a0}
+.channel-tag.warm{background:rgba(232,162,74,.15);color:var(--orange)}
+.channel-tag.cool{background:rgba(58,146,212,.15);color:var(--blue)}
+
+/* ——— 12特效维度卡片 ——— */
+.dim-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:8px;margin-top:12px;
+}
+.dim-item{
+  padding:10px 12px;background:var(--panel-hi);border:1px solid var(--line);
+  border-radius:6px;font-size:12px;
+}
+.dim-item .dim-idx{
+  color:var(--gold-dim);font-family:Georgia,serif;
+  font-size:11px;margin-right:6px;
+}
+.dim-item .dim-name{color:var(--text);font-weight:500}
+.dim-item .dim-tier{color:var(--muted);font-size:10.5px;margin-top:2px;display:block}
+
+/* ——— 投放矩阵 (核心) ——— */
+.matrix-wrap{overflow-x:auto;margin-top:4px}
+.matrix{
+  width:100%;border-collapse:collapse;font-size:11.5px;
+  min-width:900px;
+}
+.matrix th,.matrix td{
+  border:1px solid var(--line);padding:8px 6px;text-align:center;
+  white-space:nowrap;
+}
+.matrix thead th{
+  background:var(--panel-hi);color:var(--muted);
+  font-weight:500;font-size:11px;
+  writing-mode:horizontal-tb;
+}
+.matrix thead th.rot{
+  min-width:44px;padding:10px 4px;
+  font-size:10.5px;
+}
+.matrix tbody th{
+  background:var(--panel);color:var(--text);font-weight:500;
+  text-align:left;padding:8px 10px;font-size:12px;
+  position:sticky;left:0;z-index:1;
+}
+.matrix tbody th.group{
+  background:var(--panel-hi);color:var(--gold);
+  font-weight:600;font-size:11px;letter-spacing:.5px;
+  text-transform:uppercase;
+}
+.cell{width:44px;height:32px}
+.c0{background:transparent}
+.c1{background:rgba(58,146,212,.18)}  /* 少量 */
+.c2{background:rgba(232,162,74,.28)}  /* 主力 */
+.c3{background:rgba(232,106,163,.45);color:#fff;font-weight:700}  /* 核心 */
+.c-free{background:rgba(76,175,122,.3)} /* 免费 */
+
+.legend{
+  display:flex;gap:18px;margin-top:14px;font-size:11.5px;
+  color:var(--muted);flex-wrap:wrap;
+}
+.legend span::before{
+  content:"";display:inline-block;width:14px;height:14px;
+  margin-right:6px;vertical-align:middle;border-radius:2px;
+}
+.legend .l1::before{background:rgba(58,146,212,.18)}
+.legend .l2::before{background:rgba(232,162,74,.28)}
+.legend .l3::before{background:rgba(232,106,163,.45)}
+.legend .l4::before{background:rgba(76,175,122,.3)}
+
+/* ——— 付费旅程 ——— */
+.journey{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+}
+.journey-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:16px;position:relative;
+}
+.journey-card h4{font-size:14px;margin-bottom:4px}
+.journey-card .persona{color:var(--muted);font-size:11.5px;margin-bottom:12px}
+.journey-path{
+  display:flex;flex-direction:column;gap:6px;font-size:12px;
+}
+.journey-step{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 10px;background:var(--panel-hi);border-radius:4px;
+  border-left:3px solid var(--dim);
+}
+.journey-step.a{border-left-color:var(--blue)}
+.journey-step.b{border-left-color:var(--orange)}
+.journey-step.c{border-left-color:var(--pink)}
+.journey-step.f{border-left-color:var(--green)}
+.journey-step .icon{font-size:10px;color:var(--muted);width:14px}
+.journey-card .arpu{
+  margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);
+  font-size:11.5px;color:var(--muted);
+}
+.journey-card .arpu b{color:var(--gold);font-family:Georgia,serif}
+
+.persona-free h4{color:var(--green)}
+.persona-mid h4{color:var(--blue)}
+.persona-heavy h4{color:var(--orange)}
+.persona-whale h4{color:var(--pink)}
+
+/* ——— 免费经济 ——— */
+.economy{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+}
+.econ-card{
+  background:var(--panel);border:1px solid var(--line);
+  border-left:3px solid var(--green);border-radius:6px;padding:14px 16px;
+}
+.econ-card h4{font-size:14px;margin-bottom:4px;color:var(--green)}
+.econ-card .formula{
+  margin:10px 0;padding:8px 10px;background:var(--panel-hi);
+  border-radius:4px;font-family:Georgia,serif;font-size:12px;
+  color:var(--gold);
+}
+.econ-card p{font-size:12px;color:var(--muted);line-height:1.7}
+
+/* ——— 问题诊断 ——— */
+.issues{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+}
+.issue{
+  background:var(--panel);border:1px solid var(--line);border-radius:6px;
+  padding:16px;border-top:3px solid var(--red);
+}
+.issue h4{font-size:13.5px;margin-bottom:8px;color:var(--red)}
+.issue p{font-size:12px;color:var(--muted);line-height:1.7}
+.issue .biz{
+  margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);
+  font-size:12px;color:var(--text);
+}
+.issue .biz b{color:var(--gold)}
+
+/* ——— 优化沙盒 ——— */
+.sandbox{
+  background:var(--panel);border:1px dashed var(--gold-dim);
+  border-radius:8px;padding:20px;
+}
+.sandbox .lead{color:var(--muted);font-size:12.5px;margin-bottom:16px}
+.idea{
+  background:var(--panel-hi);border-left:3px solid var(--gold);
+  padding:14px 16px;margin-bottom:10px;border-radius:4px;
+}
+.idea h5{font-size:13px;color:var(--gold);margin-bottom:6px}
+.idea p{font-size:12.5px;color:var(--text);line-height:1.7;margin-bottom:6px}
+.idea .meta{font-size:11.5px;color:var(--muted)}
+.idea .meta span{margin-right:12px}
+.idea .meta span b{color:var(--cyan);font-weight:500}
+.idea.empty{
+  border-left-color:var(--dim);background:transparent;
+  border:1px dashed var(--line);color:var(--dim);
+  text-align:center;font-style:italic;font-size:12px;padding:20px;
+}
+
+/* ——— 两栏 ——— */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:1100px){
+  .tri-track,.journey,.economy,.issues,.two-col{grid-template-columns:1fr}
+  .apex-layout{grid-template-columns:1fr !important}
+}
+
+footer{
+  margin-top:60px;padding-top:20px;border-top:1px solid var(--line);
+  color:var(--dim);font-size:11px;text-align:center;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>LOLM 商业化结构 · 可视化方案</h1>
+  <div class="sub">面向 LOL 手游商业化岗面试 · 基于自有商业化框架整理</div>
+  <div class="meta">
+    <span>数据口径：国服点券，1 元 = 10 点券，1 橙石 ≈ ¥1（付费获取视角）</span>
+    <span>更新时间：2026-04-24（v2 修正版）</span>
+  </div>
+</div>
+
+<!-- §1 三轨总览 -->
+<div class="section">
+  <div class="section-title">
+    <span class="num">01</span>
+    <span class="title">三轨定价总览：LOLM 商业化最核心的结构差异点</span>
+    <span class="hint">对应 JD 第 3 条 · 资源分级与价值设定</span>
+  </div>
+
+  <div class="tri-track">
+    <div class="track-card track-A">
+      <span class="tag">A 轨</span>
+      <h3>点券直购</h3>
+      <div class="role">承接大盘付费，控制感知单价</div>
+      <div class="price">¥35 — ¥109 <small>/ 350 — 1090 点券</small></div>
+      <div class="items">
+        覆盖品级：<b>普通 / 史诗 / 传说</b><br>
+        首发定价，<b>首周 8 折</b>锁定高意愿用户<br>
+        付费心墙控制在 <b>¥109</b> 以内
+      </div>
+    </div>
+    <div class="track-card track-B">
+      <span class="tag">B 轨</span>
+      <h3>战利品（含钥匙 + 原石商店）</h3>
+      <div class="role">承接中高端，沿用端游"钥匙+碎片"体系</div>
+      <div class="price">¥500 — ¥2000 <small>/ 500 — 2000 橙石（1 橙石 ≈ ¥1）</small></div>
+      <div class="items">
+        两个子模块：<br>
+        ① <b>战利品抽取</b>（钥匙开箱）：概率产出普通→神话级皮肤，概率低<br>
+        ② <b>原石商店</b>：定向兑换 <b>神话档</b>（含至臻 / 臻藏 / 海克斯）<br>
+        <b>不覆盖典藏</b>，这是与 C 轨的边界
+      </div>
+    </div>
+    <div class="track-card track-C">
+      <span class="tag">C 轨</span>
+      <h3>限定系列活动抽奖</h3>
+      <div class="role">ARPPU 峰值发动机</div>
+      <div class="price">¥2000+ <small>/ 套组集齐期望值</small></div>
+      <div class="items">
+        覆盖品级：<b>典藏 + 终极</b><br>
+        终极皮肤<b>单独制作活动</b>，不走通用套组<br>
+        典藏以独立系列抽奖形式上架
+      </div>
+    </div>
+  </div>
+
+  <div class="harvest">
+    <div class="harvest-title">◆ 皮肤售卖链路按品级分三条</div>
+    <div style="display:grid;grid-template-columns:1fr;gap:10px;margin-top:8px">
+
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="color:var(--blue);font-weight:600;width:130px;font-size:12px">普通 / 史诗 / 传说</span>
+        <span class="harvest-step">上架直售</span>
+        <span class="harvest-arrow">→</span>
+        <span class="harvest-step">下架</span>
+        <span class="harvest-arrow">→</span>
+        <span class="harvest-step">限时返场</span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="color:var(--orange);font-weight:600;width:130px;font-size:12px">神话</span>
+        <span class="harvest-step">上架抽奖 / 原石商店</span>
+        <span class="harvest-arrow">→</span>
+        <span class="harvest-step">下架</span>
+        <span class="harvest-arrow">→</span>
+        <span class="harvest-step">原石商店轮换</span>
+        <span class="harvest-arrow">→</span>
+        <span class="harvest-step">限时返场</span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="color:var(--pink);font-weight:600;width:130px;font-size:12px">典藏 / 终极</span>
+        <span class="harvest-step">上架抽奖</span>
+        <span class="harvest-arrow">→</span>
+        <span class="harvest-step">下架</span>
+        <span class="harvest-arrow">→</span>
+        <span class="harvest-step">限时返场抽奖</span>
+      </div>
+
+    </div>
+    <p style="margin-top:14px;font-size:11.5px;color:var(--muted);line-height:1.7">
+      <b style="color:var(--gold)">说明</b>：系列套装内"史诗搭配传说"的嵌套结构，发生在 <b>B 轨战利品层面</b>（同系列不同等级共同上架），不在 C 轨限定抽奖里。C 轨纯粹处理典藏 / 终极两档。
+    </p>
+  </div>
+</div>
+
+<!-- §2 皮肤分级价值体系 -->
+<div class="section">
+  <div class="section-title">
+    <span class="num">02</span>
+    <span class="title">皮肤分级：13 维特效清单 × 6 档品级</span>
+    <span class="hint">核心商业化资源的价值定锚</span>
+  </div>
+
+  <div class="panel" style="margin-bottom:14px">
+    <div class="panel-title">13 维特效清单（价值定锚的"可感知指标"）</div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:4px">
+      皮肤品级由"附加多少维特效"决定，每多一维 = 可感知的价值升级。
+      这是 JD 第 3 条"价值设定"的底层方法论。
+    </p>
+    <div class="dim-grid">
+      <div class="dim-item"><span class="dim-idx">01</span><span class="dim-name">海报 · 3D 模型</span><span class="dim-tier">普通起</span></div>
+      <div class="dim-item"><span class="dim-idx">02</span><span class="dim-name">音效</span><span class="dim-tier">史诗起</span></div>
+      <div class="dim-item"><span class="dim-idx">03</span><span class="dim-name">技能表现</span><span class="dim-tier">史诗起</span></div>
+      <div class="dim-item"><span class="dim-idx">04</span><span class="dim-name">藏品表现</span><span class="dim-tier">史诗起</span></div>
+      <div class="dim-item"><span class="dim-idx">05</span><span class="dim-name">回城特效</span><span class="dim-tier">史诗起</span></div>
+      <div class="dim-item"><span class="dim-idx">06</span><span class="dim-name">语音表现</span><span class="dim-tier">传说起</span></div>
+      <div class="dim-item"><span class="dim-idx">07</span><span class="dim-name">出生表现</span><span class="dim-tier">传说起</span></div>
+      <div class="dim-item"><span class="dim-idx">08</span><span class="dim-name">特效彩蛋</span><span class="dim-tier">传说起</span></div>
+      <div class="dim-item"><span class="dim-idx">09</span><span class="dim-name">动作彩蛋</span><span class="dim-tier">传说起</span></div>
+      <div class="dim-item"><span class="dim-idx">10</span><span class="dim-name">特殊大招</span><span class="dim-tier">神话起</span></div>
+      <div class="dim-item"><span class="dim-idx">11</span><span class="dim-name">独立特效海报</span><span class="dim-tier">神话起</span></div>
+      <div class="dim-item"><span class="dim-idx">12</span><span class="dim-name">形态切换 · 进化</span><span class="dim-tier">典藏 / 终极</span></div>
+      <div class="dim-item"><span class="dim-idx">13</span><span class="dim-name">击败水晶特效</span><span class="dim-tier">终极专属</span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">6 档品级 × 价格 × 投放路径</div>
+    <table class="grade-table">
+      <thead>
+        <tr>
+          <th style="width:90px">品级</th>
+          <th style="width:110px">点券直购价</th>
+          <th style="width:150px">原石档位</th>
+          <th>附加特效（13 维中的前 N 项）</th>
+          <th style="width:180px">主要投放</th>
+          <th style="width:170px">代表皮肤</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="grade-badge g-common">普通</span></td>
+          <td><span class="price-tag">¥35 / ¥45</span></td>
+          <td>—</td>
+          <td>仅 1-2 维：海报 3D 模型，偶有回城</td>
+          <td><span class="channel-tag cool">商城直购</span><span class="channel-tag cool">新手福利</span></td>
+          <td>系列套装中的普通款</td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge g-epic">史诗</span></td>
+          <td><span class="price-tag">¥69 / ¥79</span></td>
+          <td>—</td>
+          <td>4-5 维（前 5 项）：音效 + 技能 + 藏品 + 回城</td>
+          <td><span class="channel-tag cool">商城直购</span><span class="channel-tag warm">BP 通行证</span></td>
+          <td>系列套装中的普通款</td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge g-legend">传说</span></td>
+          <td><span class="price-tag">¥99 / ¥109</span></td>
+          <td>—</td>
+          <td>8-9 维：+ 语音 + 出生 + 彩蛋</td>
+          <td><span class="channel-tag cool">商城直购</span><span class="channel-tag hot">限定抽奖</span></td>
+          <td>系列套装中的高级款</td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge g-myth">神话</span></td>
+          <td>—</td>
+          <td><span class="price-tag">500 — 2000 橙石（¥500-2000）</span></td>
+          <td>+ 特殊大招 + 独立特效海报</td>
+          <td><span class="channel-tag warm">战利品 / 原石商店</span><span class="channel-tag hot">限定抽奖</span></td>
+          <td>至臻系列 / 海克斯系列</td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge g-ultimate">典藏</span></td>
+          <td>—</td>
+          <td>—</td>
+          <td>+ 外观独特 + 稀有限定</td>
+          <td><span class="channel-tag hot">独立活动抽奖</span></td>
+          <td>仙灵之息 艾希（不在原石商店出售）</td>
+        </tr>
+        <tr>
+          <td><span class="grade-badge g-final">终极</span></td>
+          <td>不直售</td>
+          <td>—</td>
+          <td>全 13 维 + 多形态 + 进化 + 击败水晶</td>
+          <td><span class="channel-tag hot">专属独立活动</span></td>
+          <td>狂潮 金克丝</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:11.5px;color:var(--muted);margin-top:12px">
+      <b style="color:var(--gold)">关键洞察</b>：品级划分沿用端游，但手游用户看到 ¥79 / ¥99 / 原石档皮肤时特效感知差异并不突出。
+      这是"内容分级清晰但用户认知模糊"的根因之一。
+    </p>
+  </div>
+
+  <!-- 炫彩补充 -->
+  <div class="panel" style="margin-top:14px">
+    <div class="panel-title">炫彩皮肤：独立子体系</div>
+    <p style="font-size:12.5px;color:var(--text)">
+      部件换色，附加在指定皮肤上，<b style="color:var(--gold)">¥10-20</b> 价位。
+      是"让已有皮肤再收割一次"的轻量 SKU，成本极低但毛利极高。
+      <span style="color:var(--muted)">与主线品级不冲突，属于典型的附加内容收割。</span>
+    </p>
+  </div>
+</div>
+
+<!-- §3 商业化内容 × 投放渠道 矩阵 -->
+<div class="section">
+  <div class="section-title">
+    <span class="num">03</span>
+    <span class="title">商业化内容 × 投放渠道 · 全景矩阵</span>
+    <span class="hint">每条渠道都有明确的"核心付费点"</span>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">商业化内容 × 9 条投放渠道 · 主副渠道热力图</div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px">
+      横轴 = 投放渠道，纵轴 = 外观内容类目。
+      <b>粉色 = 核心付费点</b>，<b>橙色 = 主力投放</b>，<b>蓝色 = 辅助 / 锦上添花</b>，<b>绿色 = 免费获取</b>。
+      <b style="color:var(--gold)">读图方法</b>：每一列看"这条渠道靠什么收钱"，每一行看"这个内容在哪些地方能买到"。
+    </p>
+
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th style="text-align:left;min-width:200px">内容 ＼ 渠道</th>
+            <th class="rot">商城<br>直购</th>
+            <th class="rot">BP<br>峡谷宝典</th>
+            <th class="rot">月卡<br>会员</th>
+            <th class="rot">大会员<br>VIP</th>
+            <th class="rot">首充 /<br>新手福利</th>
+            <th class="rot">战利品<br>（钥匙/原石）</th>
+            <th class="rot">限定<br>抽奖</th>
+            <th class="rot">付费<br>收集奖励</th>
+            <th class="rot">免费<br><small style="font-size:9.5px;color:var(--dim)">排位币/<br>龙魂水晶/<br>魄罗币</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th class="group" colspan="10">核心商业化资源</th></tr>
+          <tr>
+            <th>英雄皮肤</th>
+            <td class="c3">核心</td><td class="c3">核心</td><td class="c0"></td><td class="c3">核心</td>
+            <td class="c3">入门皮</td><td class="c2"></td><td class="c3">核心</td><td class="c0"></td><td class="c-free">免费</td>
+          </tr>
+          <tr>
+            <th>炫彩皮肤</th>
+            <td class="c3">核心</td><td class="c2"></td><td class="c0"></td><td class="c1"></td>
+            <td class="c1"></td><td class="c2"></td><td class="c1"></td><td class="c0"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>皮肤按键</th>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c1"></td><td class="c2">套装奖励</td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>皮肤动作姿态</th>
+            <td class="c1"></td><td class="c1"></td><td class="c0"></td><td class="c1"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c2"></td><td class="c2">套装奖励</td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>守护灵（普通/珍宠）</th>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c2"></td><td class="c1"></td><td class="c0"></td>
+          </tr>
+
+          <tr><th class="group" colspan="10">虚拟货币 · 资源投放</th></tr>
+          <tr>
+            <th>点券 / BP 经验 / 银色星尘</th>
+            <td class="c0"></td><td class="c0"></td><td class="c3">核心<br><small>小R转化</small></td><td class="c1"></td>
+            <td class="c2"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td>
+          </tr>
+
+          <tr><th class="group" colspan="10">局外装扮 · 大厅系</th></tr>
+          <tr>
+            <th>大厅角色</th>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c2">随皮肤附赠</td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>大厅画廊</th>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c2">套装奖励</td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>大厅背景</th>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c-free">免费</td>
+          </tr>
+
+          <tr><th class="group" colspan="10">局外装扮 · 身份系</th></tr>
+          <tr>
+            <th>头像 / 头像框</th>
+            <td class="c1"></td><td class="c2"></td><td class="c0"></td><td class="c1"></td>
+            <td class="c1"></td><td class="c0"></td><td class="c1"></td><td class="c2">收集/段位</td><td class="c-free">免费</td>
+          </tr>
+          <tr>
+            <th>队伍旗帜</th>
+            <td class="c1"></td><td class="c1"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c1"></td><td class="c0"></td><td class="c2"></td><td class="c1"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>名片框</th>
+            <td class="c0"></td><td class="c2">填充</td><td class="c0"></td><td class="c1"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c1"></td><td class="c2"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>炫彩昵称</th>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c1"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c3">时空探索</td><td class="c0"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>聊天气泡</th>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c2">VIP 填充</td>
+            <td class="c0"></td><td class="c0"></td><td class="c2">时空探索</td><td class="c0"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>弹窗边框</th>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c3">VIP 专属</td>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>信息底纹</th>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c3">高端抽奖</td><td class="c0"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>结算表现</th>
+            <td class="c1"></td><td class="c2">填充</td><td class="c0"></td><td class="c0"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c1"></td><td class="c1">随皮肤</td><td class="c0"></td>
+          </tr>
+
+          <tr><th class="group" colspan="10">局内装扮 · 对局表现</th></tr>
+          <tr>
+            <th>局内表情</th>
+            <td class="c2"></td><td class="c2"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c1"></td><td class="c0"></td><td class="c2"></td><td class="c1"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>回城特效</th>
+            <td class="c2"></td><td class="c2"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c1"></td><td class="c0"></td><td class="c2"></td><td class="c1">随皮肤</td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>家园卫士</th>
+            <td class="c2"></td><td class="c2"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c1"></td><td class="c0"></td><td class="c2"></td><td class="c1"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>连破纹章</th>
+            <td class="c0"></td><td class="c3">主力</td><td class="c0"></td><td class="c0"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c1"></td><td class="c2">套装奖励</td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>天幕</th>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c3">高端抽奖</td><td class="c0"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>守卫装扮</th>
+            <td class="c1"></td><td class="c1"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>击塔 / 击败特效</th>
+            <td class="c0"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c3">高端抽奖</td><td class="c0"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>战旗 / 小兵印记</th>
+            <td class="c2"></td><td class="c2"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c1"></td><td class="c0"></td><td class="c1"></td><td class="c1"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>出生顶/底特效</th>
+            <td class="c2"></td><td class="c2"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c1"></td><td class="c0"></td><td class="c2"></td><td class="c0"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>不朽星痕</th>
+            <td class="c0"></td><td class="c1"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c2"></td><td class="c2">累积</td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>智能语音</th>
+            <td class="c1"></td><td class="c0"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c1"></td><td class="c0"></td><td class="c0"></td>
+          </tr>
+          <tr>
+            <th>明星播报 / 娱乐展示</th>
+            <td class="c0"></td><td class="c1"></td><td class="c0"></td><td class="c0"></td>
+            <td class="c0"></td><td class="c0"></td><td class="c2"></td><td class="c0"></td><td class="c0"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="legend">
+      <span class="l3">核心付费点（粉）：该渠道的主要收入来源</span>
+      <span class="l2">主力投放（橙）：常规放量</span>
+      <span class="l1">辅助 / 锦上添花（蓝）：填充 / 交叉曝光</span>
+      <span class="l4">免费获取（绿）：竞技 / 任务产出</span>
+    </div>
+
+    <div style="margin-top:18px;padding:14px 16px;background:var(--panel-hi);border-radius:6px;border-left:3px solid var(--gold)">
+      <div style="color:var(--gold);font-weight:600;font-size:13px;margin-bottom:8px">◆ 每条渠道的核心付费点速查</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-size:12px;color:var(--text);line-height:1.8">
+        <div>· <b style="color:var(--blue)">商城直购</b>：英雄皮肤 + 炫彩皮肤</div>
+        <div>· <b style="color:var(--blue)">BP 峡谷宝典</b>：皮肤（玩家核心付费点）</div>
+        <div>· <b style="color:var(--blue)">月卡会员</b>：点券 / BP经验 / 银色星尘（小 R 转化）</div>
+        <div>· <b style="color:var(--blue)">大会员 VIP</b>：皮肤（核心）+ 专属装扮（锦上添花）</div>
+        <div>· <b style="color:var(--blue)">首充 / 新手福利</b>：入门皮肤</div>
+        <div>· <b style="color:var(--blue)">战利品</b>：神话皮肤</div>
+        <div>· <b style="color:var(--blue)">限定抽奖</b>：英雄皮肤（典藏 / 终极）</div>
+        <div>· <b style="color:var(--blue)">付费收集奖励</b>：套装集齐后解锁系列外观</div>
+        <div>· <b style="color:var(--blue)">免费</b>：赛季皮肤 / 段位奖励 / 活跃产出</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- §4 免费经济闭环 -->
+<div class="section">
+  <div class="section-title">
+    <span class="num">04</span>
+    <span class="title">免费侧经济闭环 · 三套并行货币</span>
+    <span class="hint">竞技留存工具，与付费互补而非替代</span>
+  </div>
+
+  <div class="economy">
+    <div class="econ-card">
+      <h4>排位币</h4>
+      <div class="formula">20000 排位币 ≈ 100 局排位赛</div>
+      <p>
+        每局平均 200 排位币（通过征程值累积）。
+        兑换 <b style="color:var(--text)">光耀之刃蛮王</b> 等赛季皮肤。
+        段位加成 + 周末活动可加速。跨赛季不清零。<br><br>
+        <b style="color:var(--gold)">设计意图</b>：筛选硬核玩家，用免费皮肤做留存工具。拿到皮肤的用户次月留存 +20-30%。
+      </p>
+    </div>
+    <div class="econ-card">
+      <h4>龙魂水晶</h4>
+      <div class="formula">活跃任务 · 熟练度 · 活动</div>
+      <p>
+        可走两条路径：
+        <b style="color:var(--text)">直接兑换皮肤</b>，或
+        <b style="color:var(--text)">龙魂水晶 → 橙色原石 → 银色星尘 → 传说皮肤碎片 → 铸造皮肤</b>（多步嵌套）。<br><br>
+        <b style="color:var(--red)">问题</b>：兑换链过长，玩家算不清转换率，理解成本高。
+      </p>
+    </div>
+    <div class="econ-card">
+      <h4>魄罗币 / 魄罗能量</h4>
+      <div class="formula">BP 投放 · 活动投放</div>
+      <p>
+        配套 BP 通行证产出，用于购买英雄、皮肤碎片、战利品钥匙。
+        是付费用户的"额外补偿体系"，让 BP 看起来更有性价比。<br><br>
+        <b style="color:var(--gold)">设计意图</b>：强化 BP 的长期回报感，提升续购率。
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- §5 玩家付费旅程 -->
+<div class="section">
+  <div class="section-title">
+    <span class="num">05</span>
+    <span class="title">玩家付费旅程 · 四类人群在三轨中的流动</span>
+    <span class="hint">从用户视角回答"商业化如何分层覆盖"</span>
+  </div>
+
+  <div class="journey">
+    <div class="journey-card persona-free">
+      <h4>F · 白嫖型</h4>
+      <div class="persona">不付费 · 重竞技 · 高留存</div>
+      <div class="journey-path">
+        <div class="journey-step f"><span class="icon">①</span>新手福利 60 点券 8 天登录</div>
+        <div class="journey-step f"><span class="icon">②</span>排位征程累积排位币</div>
+        <div class="journey-step f"><span class="icon">③</span>20000 排位币兑换赛季皮肤</div>
+        <div class="journey-step f"><span class="icon">④</span>活跃任务 · 龙魂水晶、魄罗币等慢慢攒</div>
+      </div>
+      <div class="arpu">年 ARPU：<b>¥0</b> ｜ 价值：口碑 + 留存基数</div>
+    </div>
+
+    <div class="journey-card persona-mid">
+      <h4>M · 月卡型</h4>
+      <div class="persona">¥30/月 · 小付费 · 持续活跃</div>
+      <div class="journey-path">
+        <div class="journey-step a"><span class="icon">①</span>月卡每日点券</div>
+        <div class="journey-step a"><span class="icon">②</span>首充礼包 → 低价史诗</div>
+        <div class="journey-step a"><span class="icon">③</span>商城偶尔直购 ¥79 史诗</div>
+        <div class="journey-step b"><span class="icon">④</span>买钥匙开战利品攒皮肤碎片</div>
+      </div>
+      <div class="arpu">年 ARPU：<b>¥500-800</b> ｜ 覆盖：A 轨为主 + B 轨少量</div>
+    </div>
+
+    <div class="journey-card persona-heavy">
+      <h4>H · 中大 R</h4>
+      <div class="persona">¥500+/月 · 深度付费 · 英雄党</div>
+      <div class="journey-path">
+        <div class="journey-step a"><span class="icon">①</span>BP 峡谷宝典 ¥68 必买</div>
+        <div class="journey-step a"><span class="icon">②</span>商城直购本命英雄全皮肤</div>
+        <div class="journey-step b"><span class="icon">③</span>原石商店 1000/1500 档至臻</div>
+        <div class="journey-step c"><span class="icon">④</span>心仪典藏活动偶尔入坑 ¥2000</div>
+      </div>
+      <div class="arpu">年 ARPU：<b>¥3000-8000</b> ｜ 覆盖：A+B+C 三轨均摊</div>
+    </div>
+
+    <div class="journey-card persona-whale">
+      <h4>W · 鲸鱼用户</h4>
+      <div class="persona">¥5000+/单期 · 收藏向 · 社交展示</div>
+      <div class="journey-path">
+        <div class="journey-step c"><span class="icon">①</span>限定抽奖大保底拉满</div>
+        <div class="journey-step c"><span class="icon">②</span>炫彩昵称 · 天幕 · 击塔特效</div>
+        <div class="journey-step a"><span class="icon">③</span>大会员 VIP 年度全权益</div>
+        <div class="journey-step b"><span class="icon">④</span>典藏 / 终极皮肤每款必收</div>
+      </div>
+      <div class="arpu">年 ARPU：<b>¥30000+</b> ｜ 覆盖：C 轨为主 + 高端限定</div>
+    </div>
+  </div>
+</div>
+
+<!-- §6 核心问题诊断 -->
+<div class="section">
+  <div class="section-title">
+    <span class="num">06</span>
+    <span class="title">核心问题诊断 · 结构清晰但呈现乱的三个根因</span>
+    <span class="hint">对应用户反馈："玩家理解成本高"</span>
+  </div>
+
+  <div class="issues">
+    <div class="issue">
+      <h4>① 多对多投放，认知地图缺失</h4>
+      <p>
+        28 个外观内容 × 9 条渠道 = 典型的多对多关系。
+        玩家无法建立"我想要这个东西 → 该去哪里获得"的清晰认知。
+        比如回城特效既在商城、BP、战利品、限定抽奖都有。
+      </p>
+      <div class="biz">
+        <b>商业化后果</b>：用户在"想买但找不到"的摩擦中流失意愿，潜在付费被稀释。
+      </div>
+    </div>
+    <div class="issue">
+      <h4>② 品级感知模糊（端游沿用病）</h4>
+      <p>
+        品级划分沿用端游，但手游用户看到 79/99/¥100 原石的皮肤时，
+        <b style="color:var(--text)">特效感知差异没拉开</b>。
+        典型如大元素使拉克丝放在一堆传说里并不突出。
+      </p>
+      <div class="biz">
+        <b>商业化后果</b>：高品级溢价空间被自己稀释，ARPPU 天花板被自己压低。
+      </div>
+    </div>
+    <div class="issue">
+      <h4>③ 免费货币链过长</h4>
+      <p>
+        龙魂水晶 → 橙色原石 → 银色星尘 → 传说皮肤碎片 → 铸造皮肤，
+        <b style="color:var(--text)">4 步嵌套转换</b>，每一步都有换算率差异。
+        玩家算不清值不值，干脆不参与。
+      </p>
+      <div class="biz">
+        <b>商业化后果</b>：免费侧留存工具失效，反哺不到付费。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- §7 优化点沙盒 -->
+<div class="section">
+  <div class="section-title">
+    <span class="num">07</span>
+    <span class="title">优化点沙盒 · 可探索的商业化维度</span>
+    <span class="hint">对应 JD 第 4 条 · 挖掘商业化形式</span>
+  </div>
+
+  <div class="panel" style="margin-bottom:14px;border-left:3px solid var(--gold)">
+    <div class="panel-title">前置约束 · 运营 5 年产品的优化边界</div>
+    <p style="font-size:12.5px;line-height:1.8;color:var(--text)">
+      LOLM 已运营多年，玩家认知已形成、历史数据已沉淀、历代系统相互耦合。
+      <b style="color:var(--gold)">任何优化方案都要满足三条约束</b>：
+      ① 不打破老用户既有认知（否则反噬留存）；
+      ② 不推翻历史资产价值（不能让已付费用户感觉吃亏）；
+      ③ 增量而非替换（新机制叠加在旧体系之上，老系统继续运转）。
+      下面三个方向都遵循这个框架。
+    </p>
+  </div>
+
+  <div class="sandbox">
+
+    <!-- —— 针对问题① 多对多投放 —— -->
+    <div class="idea">
+      <h5>◆ 针对问题①｜多对多投放的本质：付费意愿过度集中在皮肤</h5>
+      <p style="margin-bottom:10px">
+        <b style="color:var(--gold)">核心洞察</b>：多对多不是渠道设计问题，是<b>玩家付费意愿结构问题</b>——
+        付费意愿基本集中在皮肤上，即使开新渠道也不得不捆绑皮肤才能卖得动。
+        所以<b style="color:var(--gold)">唯一的解法是增加道具种类，挖掘潜在消费意愿</b>，把付费重量从皮肤单点分散到多个品类。
+      </p>
+
+      <div style="background:var(--panel-hi);padding:12px 14px;border-radius:6px;margin:10px 0 12px 0;border-left:3px solid var(--cyan)">
+        <div style="color:var(--cyan);font-weight:600;font-size:12.5px;margin-bottom:6px">① 延伸"皮肤动作姿态"这类新品类尝试</div>
+        <p style="font-size:12px;color:var(--text);line-height:1.7;margin:0">
+          LOLM 已经做了皮肤动作姿态的尝试，效果如果验证过，可以延伸出更多同逻辑品类。
+          方向：把外观消费从"皮肤本体"扩展到"皮肤的情境化附加表达"。
+        </p>
+      </div>
+
+      <div style="background:var(--panel-hi);padding:12px 14px;border-radius:6px;margin:10px 0 12px 0;border-left:3px solid var(--cyan)">
+        <div style="color:var(--cyan);font-weight:600;font-size:12.5px;margin-bottom:6px">② 扩展"玩家选择时展示"的系统（对标 Apex 铭牌体系）</div>
+
+        <!-- 两栏布局：左文字 + 右图 -->
+        <div class="apex-layout" style="display:grid;grid-template-columns:1fr 240px;gap:16px;align-items:start">
+
+          <!-- 左文字 -->
+          <div>
+            <p style="font-size:12px;color:var(--text);line-height:1.7;margin:0 0 10px 0">
+              现在 LOLM 的名片框 / 铭牌主要只在对局开始 loading 展示一次，而且<b>需要玩家主动点击才能展示</b>，
+              <b>展示密度低 = 付费意愿无法沉淀</b>。
+            </p>
+            <p style="font-size:12px;color:var(--text);line-height:1.7;margin:0 0 10px 0">
+              参考 Apex 的身份展示层：<b>多层边框 + 附加铭牌 + 战绩徽章 + 姿态海报</b>组合，
+              把身份展示做成玩家日常反复触达的场景，每一层都可以拆成独立付费位。
+            </p>
+            <p style="font-size:12px;color:var(--text);line-height:1.7;margin:0 0 10px 0">
+              <b style="color:var(--gold)">同时探索</b>：在<b>选取英雄时</b>把这部分内容同步过去（作为皮肤动作姿态的延伸），
+              让身份展示从"只在 loading 出现一次"拓展到"选人阶段每局可见"。
+            </p>
+            <p style="font-size:12px;color:var(--text);line-height:1.7;margin:0">
+              <b style="color:var(--gold)">对 LOLM 的落地方向</b>：把目前的名片框 / 头像 / 结算表现 / 段位徽章等零散要素，
+              <b>组装成一套"召唤师个人身份卡"</b>，在大厅、匹配界面、选人页面、对局 loading、结算页面反复调用。
+              每一层（主海报 / 战绩数据 / 徽章 / 附加铭牌 / 背景底纹）都做成独立付费位。
+            </p>
+          </div>
+
+          <!-- 右图 -->
+          <div style="background:#0a0e13;border:1px dashed var(--gold-dim);border-radius:6px;padding:10px;text-align:center">
+            <div style="color:var(--gold);font-size:11.5px;font-weight:600;margin-bottom:6px">参考：Apex 身份展示层</div>
+            <img src="apex_banner_reference.png" alt="Apex 铭牌参考"
+                 style="max-width:100%;border-radius:4px;display:none"
+                 onload="this.style.display='block';this.nextElementSibling.style.display='none'">
+            <div style="color:var(--muted);font-size:10.5px;line-height:1.6;padding:10px 4px">
+              ［示意］<br>
+              卡片编号 CNo.36<br>
+              三层段位徽章<br>
+              核心数据铭牌<br>
+              （击杀 / 爆头 / 伤害）<br>
+              人物动态海报<br>
+              <span style="color:var(--dim);font-size:10px;margin-top:6px;display:block">
+                每一层都是独立收费 SKU<br>玩家从"选皮肤"扩展到"选身份"
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="meta" style="margin-top:10px">
+        <span>影响维度：<b>拓展付费品类，降低皮肤依赖</b></span>
+        <span>技术成本：<b>中-高（需要大规模 UI 重构）</b></span>
+        <span>付费段受益：<b>H / W 用户 + 中重度玩家拓展</b></span>
+      </div>
+    </div>
+
+    <!-- —— 针对问题② 品级感知 —— -->
+    <div class="idea">
+      <h5>◆ 针对问题②｜品级感知：常规解已在执行，暂无显著更优方案</h5>
+      <p style="margin-bottom:10px">
+        <b style="color:var(--gold)">现行方案</b>（端游、LOLM 都在用）：在原品级之上增加新品级，用"稀有度跳变"拉动认知。
+        例如传说 → 神话 → 至臻 → 臻藏 → 典藏 → 终极，每次在顶端加一档。
+      </p>
+      <p style="margin-bottom:10px;color:var(--text);font-size:12.5px">
+        <b style="color:var(--gold)">判断</b>：这个方案<b>没有明显问题</b>。手游的"情境分层（节日版/联动版）"和"品级标签 UI 升级"都已在游戏中落地。
+        "皮肤动态成长"理论上可行但实操性不高（重做特效成本 ≈ 做新皮肤）。
+      </p>
+      <p style="font-size:12.5px;color:var(--text);margin-bottom:10px">
+        <b style="color:var(--gold)">当前状态</b>：品级感知问题的核心矛盾——<b>品级数量 vs 感知区分度</b>——是端游遗留问题，
+        暂时没有颠覆性解法，更多是逐步通过 UI 升级 / 情境包装做渐进优化。
+      </p>
+      <div class="meta">
+        <span>影响维度：<b>高品级溢价空间</b></span>
+        <span>当前策略：<b>渐进式 UI / 包装升级</b></span>
+        <span>颠覆解法：<b>暂无</b></span>
+      </div>
+    </div>
+
+    <!-- —— 针对问题③ 免费货币链 —— -->
+    <div class="idea">
+      <h5>◆ 针对问题③｜免费货币链过长：简化</h5>
+      <p style="margin-bottom:10px">
+        <b style="color:var(--gold)">现状</b>：龙魂水晶 → 橙色原石 → 银色星尘 → 传说皮肤碎片 → 铸造皮肤，<b>4 步嵌套</b>。
+        每步都有换算率差异，玩家算不清值不值，干脆不参与。
+        金铲铲的橙色精粹已经算长了，LOLM 的链路更长。
+      </p>
+      <p style="margin-bottom:10px">
+        <b style="color:var(--gold)">简化方向</b>：参考金铲铲的做法，但再往"轻"一档。
+        活跃向玩家的货币路径应该是：
+      </p>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0 10px 0">
+        <span class="harvest-step" style="background:var(--panel-hi)">对局积累</span>
+        <span class="harvest-arrow">+</span>
+        <span class="harvest-step" style="background:var(--panel-hi)">活动发放</span>
+        <span class="harvest-arrow">→</span>
+        <span class="harvest-step" style="background:rgba(76,175,122,.2);color:#7de1a7;border-color:var(--green)">直接兑换皮肤</span>
+      </div>
+      <p style="font-size:12px;color:var(--text);line-height:1.7;margin-bottom:10px">
+        <b style="color:var(--gold)">运营 5 年产品的兼容方案</b>：不推翻老链路（老玩家手里还有大量历史货币），
+        而是<b>加一条新的"短路径"并行</b>——让新用户默认走短路径，老用户可选保留旧路径兑换历史资产。
+        给 6 个月过渡期，然后把长链路做淡化处理。
+      </p>
+      <div class="meta">
+        <span>影响维度：<b>免费侧留存反哺付费</b></span>
+        <span>技术成本：<b>低-中</b></span>
+        <span>付费段受益：<b>F / M 用户</b></span>
+      </div>
+    </div>
+
+    <!-- —— 补充方向④ 扩展 BP 品类 —— -->
+    <div class="idea">
+      <h5>◆ 补充方向④｜扩展 BP 品类：多赛道通行证</h5>
+      <p style="margin-bottom:10px">
+        参考端游（普通 BP + 乱斗 BP）和金铲铲（3 个 BP 并行），
+        LOLM 当前只有"峡谷宝典"一个 BP。可根据娱乐模式 / 活动类型增加包装独立 BP。
+        中小 R 付费活动已证明"活跃 × 付费"绑定模型在 LOLM 生效良好，BP 本身就是这个模型最成熟的载体。
+      </p>
+      <div class="meta">
+        <span>影响维度：<b>付费渗透率</b></span>
+        <span>技术成本：<b>低（复用现有 BP 框架）</b></span>
+        <span>付费段受益：<b>F→M 转化 · M 留存</b></span>
+      </div>
+    </div>
+
+    <!-- —— 补充方向⑤ 社交驱动购买 —— -->
+    <div class="idea">
+      <h5>◆ 补充方向⑤｜扩展用户触达：全场景"我想要"网络</h5>
+      <p style="margin-bottom:10px">
+        <b style="color:var(--gold)">核心思路</b>：把现有"我想要"功能从<b>仅限商城内</b>扩展到<b>对局前 / 中 / 后全链路</b>，
+        给玩家在每个接触皮肤的场景都提供标记机会。
+        本质是把<b>"社交羡慕"这一瞬间的冲动付费意愿</b>捕捉并延后兑现——
+        玩家当下心动，但商城入口复杂容易遗忘；全场景标记机制帮玩家记住，活动时精准触发。
+      </p>
+
+      <div style="background:var(--panel-hi);padding:12px 14px;border-radius:6px;margin:10px 0 12px 0">
+        <div style="color:var(--cyan);font-weight:600;font-size:12.5px;margin-bottom:10px">◆ 标记触达场景覆盖</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-size:12px;line-height:1.7">
+          <div style="padding:10px;background:var(--panel);border-left:3px solid var(--blue);border-radius:4px">
+            <div style="color:var(--blue);font-weight:600;margin-bottom:4px">对局前</div>
+            <div style="color:var(--text);font-size:11.5px">
+              · BP 选人界面看对手皮肤<br>
+              · 匹配 loading 展示皮肤海报<br>
+              · 加载页队友皮肤预览
+            </div>
+          </div>
+          <div style="padding:10px;background:var(--panel);border-left:3px solid var(--orange);border-radius:4px">
+            <div style="color:var(--orange);font-weight:600;margin-bottom:4px">对局中</div>
+            <div style="color:var(--text);font-size:11.5px">
+              · 对战中看到队友 / 对手皮肤特效<br>
+              · 击杀瞬间看到对方回城 / 技能<br>
+              · 死亡回放看到对方皮肤演出
+            </div>
+          </div>
+          <div style="padding:10px;background:var(--panel);border-left:3px solid var(--pink);border-radius:4px">
+            <div style="color:var(--pink);font-weight:600;margin-bottom:4px">对局后</div>
+            <div style="color:var(--text);font-size:11.5px">
+              · 结算页 MVP 皮肤展示<br>
+              · 战绩列表点击好友 / 队友<br>
+              · 对局回放观看他人操作
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size:12px;color:var(--text);line-height:1.7;margin-bottom:10px">
+        <b style="color:var(--gold)">闭环设计</b>：所有场景标记 → 统一进入"我的心愿单" → 活动 / 折扣 / 返场时<b>精准推送</b> →
+        商城中置顶展示 → 降低从意愿到付费的摩擦成本。
+      </p>
+
+      <div class="meta">
+        <span>影响维度：<b>商城转化率 + 意愿漏斗完整度</b></span>
+        <span>技术成本：<b>中（多场景埋点 + 统一心愿单）</b></span>
+        <span>付费段受益：<b>M / H 用户 · 瞬时冲动收割</b></span>
+      </div>
+    </div>
+
+    <div class="idea empty">
+      <span>+ 待补充：面试前若有新思路，继续追加</span>
+    </div>
+  </div>
+</div>
+
+
+
+<footer>
+  LOLM 商业化结构可视化方案 · 基于用户原始框架整理 · 2026-04-24
+</footer>
+
+</div>
+</body>
+</html>
